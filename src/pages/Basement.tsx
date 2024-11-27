@@ -66,8 +66,9 @@ const Basement = () => {
     pointLight.position.set(0, 5, 0);
     scene.add(pointLight);
 
-    // Fog
-    scene.fog = new THREE.FogExp2(0x000000, 0.15);
+    // Fog - explicitly typed as FogExp2
+    const fog = new THREE.FogExp2(0x000000, 0.15);
+    scene.fog = fog;
 
     camera.position.z = 5;
     camera.position.y = 2;
@@ -107,7 +108,9 @@ const Basement = () => {
       });
 
       pointLight.intensity = lightOn ? 2 : 0.5;
-      scene.fog!.density = lightOn ? 0.05 : 0.15;
+      if (scene.fog instanceof THREE.FogExp2) {
+        scene.fog.density = lightOn ? 0.05 : 0.15;
+      }
 
       renderer.render(scene, camera);
     };
